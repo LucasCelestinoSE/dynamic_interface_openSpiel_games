@@ -6,7 +6,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/open_spiel/open_spiel_core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/open_spiel/games/chess)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/interface_graphical)
 file(GLOB_RECURSE OPEN_SPIEL_CORE ${CMAKE_CURRENT_SOURCE_DIR}/src/open_spiel/open_spiel_core/*)
-file(GLOB INTERFACE_GRAPHICAL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/interface_graphical/*.cc)
+file(GLOB_RECURSE INTERFACE_GRAPHICAL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/interface_graphical/*)
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc)
 
 if (EMSCRIPTEN)
@@ -14,7 +14,7 @@ if (EMSCRIPTEN)
   set(CMAKE_EXECUTABLE_SUFFIX ".html") # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
 endif ()
 
-add_executable(${PROJECT_NAME} ${OPEN_SPIEL_CHESS} ${OPEN_SPIEL_CORE} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${OPEN_SPIEL_CHESS} ${OPEN_SPIEL_CORE} ${SOURCE_FILES} ${INTERFACE_GRAPHICAL_SRC})
 add_subdirectory("raylib")
 add_subdirectory(abseil-cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC 
