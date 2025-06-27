@@ -11,7 +11,8 @@ int main()
 
     auto game = open_spiel::LoadGame("chess");
     auto state = game->NewInitialState();
-    cout << state->ToString() << endl;
+    state->ApplyAction(state->StringToAction("e4"));
+    board.updateFromState(state->ToString());
     cout << board.toString() << endl;
 
     return 0;

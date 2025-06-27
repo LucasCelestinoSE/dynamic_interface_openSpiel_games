@@ -118,3 +118,27 @@ std::vector<PieceInfo> Board::parseFenPlacement(const std::string &fen)
 
     return boardPieces;
 }
+void Board::updateFromState(std::string fen)
+{
+
+    // Primeiro, limpe todas as peças
+    for (int row = 0; row < rows; ++row)
+    {
+        for (int col = 0; col < cols; ++col)
+        {
+            squares[row][col].piece = Piece(); // Peça vazia
+        }
+    }
+
+    // Parse apenas a parte de posicionamento das peças
+    std::vector<PieceInfo> pieces = parseFenPlacement(fen);
+
+    // Atualizar o tabuleiro com as peças
+    for (const auto &pieceInfo : pieces)
+    {
+        if (pieceInfo.row < rows && pieceInfo.col < cols)
+        {
+            squares[pieceInfo.row][pieceInfo.col].piece = (pieceInfo.piece);
+        }
+    }
+}

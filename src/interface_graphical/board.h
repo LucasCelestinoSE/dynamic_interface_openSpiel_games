@@ -14,11 +14,11 @@ private:
 
 public:
     vector<vector<Square>> squares;
-    std::unique_ptr<open_spiel::State> chessState; // Estado lógico do jogo de xadrez
 
     Board(int rows = 8, int cols = 8);
     std::string toString();
     Piece getTypeFEN(std::string fen);
+    void updateFromState(std::string fen); // Sincroniza o tabuleiro com o estado
     void fenToBoard(const std::string &fen);
     std::vector<PieceInfo> parseFenPlacement(const std::string &fen);
 };
