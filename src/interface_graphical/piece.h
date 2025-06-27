@@ -3,13 +3,13 @@
 
 #include "raylib.h"
 #include "pieceType.h"
-#include "colorType.h"
 class Piece
 {
 
 public:
     PieceType pieceType;
     Color color;
+
     Piece()
     {
         this->pieceType = PieceType::NONE;

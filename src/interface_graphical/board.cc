@@ -4,7 +4,7 @@
 #include <cctype>
 #include <sstream>
 #include <iostream>
-
+#include "raylib.h"
 Board::Board(int rows, int cols) : rows(rows), cols(cols)
 {
     // Redimensionar o vetor externo para o número de linhas
@@ -25,7 +25,9 @@ Board::Board(int rows, int cols) : rows(rows), cols(cols)
         }
     }
 }
-
+// iterar as colunas
+// Se for letra, chama a função getTypefen
+// Se for número
 std::string Board::toString()
 {
     std::ostringstream oss;
@@ -43,67 +45,76 @@ std::string Board::toString()
     return oss.str();
 }
 
-Piece Board::getTypeFEN(std::string fen)
+Piece getPieceFromChar(char fenChar)
 {
-
-    if (fen.empty())
-    {
-        return Piece();
-    }
-    char fenChar = fen[0];
-    PieceType type;
-    Color color;
 
     switch (fenChar)
     {
     case 'p':
-        type = PieceType::PAWN;
-        color = BLACK;
-        break;
+        return Piece(PieceType::PAWN, BLACK);
     case 'P':
-        type = PieceType::PAWN;
-        color = WHITE;
-        break;
+        return Piece(PieceType::PAWN, WHITE);
     case 'r':
-        type = PieceType::ROOK;
-        color = BLACK;
-        break;
+        return Piece(PieceType::ROOK, BLACK);
     case 'R':
-        type = PieceType::ROOK;
-        color = WHITE;
-        break;
+        return Piece(PieceType::ROOK, WHITE);
     case 'n':
-        type = PieceType::KNIGHT;
-        color = BLACK;
-        break;
+        return Piece(PieceType::KNIGHT, BLACK);
     case 'N':
-        type = PieceType::KNIGHT;
-        color = WHITE;
-        break;
+        return Piece(PieceType::KNIGHT, WHITE);
     case 'b':
-        type = PieceType::BISHOP;
-        color = BLACK;
-        break;
+        return Piece(PieceType::BISHOP, BLACK);
     case 'B':
-        type = PieceType::BISHOP;
-        color = WHITE;
-        break;
+        return Piece(PieceType::BISHOP, WHITE);
     case 'q':
-        type = PieceType::QUEEN;
-        color = BLACK;
-        break;
+        return Piece(PieceType::QUEEN, BLACK);
     case 'Q':
-        type = PieceType::QUEEN;
-        color = WHITE;
-        break;
+        return Piece(PieceType::QUEEN, WHITE);
     case 'k':
-        type = PieceType::KING;
-        color = BLACK;
-        break;
+        return Piece(PieceType::KING, BLACK);
     case 'K':
-        type = PieceType::KING;
-        color = WHITE;
-        break;
+        return Piece(PieceType::KING, WHITE);
+    default:
+        return Piece(); // Retorna uma peça vazia para caracteres inválidos
     }
-    return Piece(type, color);
+}
+std::vector<PieceInfo> Board::parseFenPlacement(const std::string &fen)
+{
+    std::vector<PieceInfo> boardPieces;
+    int currentRow = 0;
+    int currentCol = 0;
+
+    for (char fenChar : fen)
+    {
+        // Para quando a parte de posicionamento das peças terminar (indicado por um espaço)
+        if (fenChar == ' ')
+        {
+            break;
+        }
+
+        // Se for um dígito, ele indica quadrados vazios. Avançamos a coluna.
+        if (isdigit(fenChar))
+        {
+            currentCol += (fenChar - '0'); // Converte char '1' para int 1, etc.
+        }
+        // Se for uma barra, pulamos para a próxima linha.
+        else if (fenChar == '/')
+        {
+            currentRow++;
+            currentCol = 0;
+        }
+        // Se for uma letra, é uma peça.
+        else
+        {
+            Piece piece = getPieceFromChar(fenChar);
+            // Adiciona a peça à lista se ela for válida
+            if (piece.pieceType != PieceType::NONE)
+            {
+                boardPieces.push_back({currentRow, currentCol, piece});
+                currentCol++;
+            }
+        }
+    }
+
+    return boardPieces;
 }

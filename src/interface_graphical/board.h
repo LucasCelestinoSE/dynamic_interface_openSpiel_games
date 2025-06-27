@@ -1,9 +1,10 @@
 #include <string>
-#include "raylib.h"
 #include <vector>
 #include "square.h"
 #include "spiel.h"
 #include "chess.h"
+#include "pieceInfo.h"
+
 using namespace std;
 class Board
 {
@@ -19,4 +20,5 @@ public:
     std::string toString();
     Piece getTypeFEN(std::string fen);
     void fenToBoard(const std::string &fen);
+    std::vector<PieceInfo> parseFenPlacement(const std::string &fen);
 };
