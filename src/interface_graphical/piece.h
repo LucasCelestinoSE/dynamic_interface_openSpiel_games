@@ -1,21 +1,23 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-#include <string>
 #include "raylib.h"
-#include <vector>
-#include <iostream>
-#include <pieceType.cc>
+#include "pieceType.h"
+#include "colorType.h"
 class Piece
 {
-private:
-    PieceType type;
-    Color color;
-    std::string TexturePath;
 
 public:
-    void movePiece()
+    PieceType pieceType;
+    Color color;
+    Piece()
     {
+        this->pieceType = PieceType::NONE;
+    }
+    Piece(PieceType pieceType, Color color)
+    {
+        this->pieceType = pieceType;
+        this->color = color;
     }
 };
 

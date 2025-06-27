@@ -1,82 +1,109 @@
 #include "board.h"
 #include "square.h"
+#include "piece.h"
 #include <cctype>
+#include <sstream>
+#include <iostream>
 
 Board::Board(int rows, int cols) : rows(rows), cols(cols)
 {
-    // Inicializar o vetor de quadrados
+    // Redimensionar o vetor externo para o número de linhas
+    squares.resize(rows);
+    // PieceType = "" string é na verdade um numero, ou seja, envia vazia
+    // PieceType =
+    for (int row = 0; row < rows; ++row)
+    {
+        // Redimensionar cada linha para o número de colunas
+        Piece piece = Piece();
+        squares[row].resize(cols);
+
+        for (int col = 0; col < cols; ++col)
+        {
+            // Inicializar cada quadrado
+            Color color = ((row + col) % 2 == 0) ? LIGHTGRAY : DARKGRAY;
+            squares[row][col] = Square(row, col, color, piece);
+        }
+    }
+}
+
+std::string Board::toString()
+{
+    std::ostringstream oss;
+
     for (int row = 0; row < rows; ++row)
     {
         for (int col = 0; col < cols; ++col)
         {
-            // Alternar cores entre LIGHTGRAY e DARKGRAY
-            Color color = ((row + col) % 2 == 0) ? GREEN : DARKGRAY;
-            square.push_back(Square(row, col, color));
+            // Adicionar a posição e o tipo de peça ao stream
+            oss << "[" << row << "," << col << ": " << squares[row][col].toString() << "] ";
         }
+        oss << "\n"; // Nova linha após cada linha do tabuleiro
     }
+
+    return oss.str();
 }
 
-void Board::draw()
-{
-    for (const auto &sq : square)
-    {
-        sq.draw(); // Desenhar cada quadrado
-    }
-}
-
-void Board::setFromFen(const std::string &fen)
-{
-    // Limpar o estado anterior do tabuleiro
-    for (auto &sq : square)
-    {
-        sq.setPiece(' '); // Remover qualquer peça do quadrado
-    }
-
-    int row = 0, col = 0;
-
-    for (char c : fen)
-    {
-        if (c == ' ')
-            break; // Fim da parte do tabuleiro na FEN string
-
-        if (std::isdigit(c))
-        {
-            // Avançar colunas para espaços vazios
-            col += c - '0';
-        }
-        else if (c == '/')
-        {
-            // Avançar para a próxima linha
-            row++;
-            col = 0;
-        }
-        else
-        {
-            // Atualizar o quadrado com a peça correspondente
-            if (row < rows && col < cols)
-            {
-                int index = row * cols + col;
-                square[index].setPiece(c); // Atualizar a peça no quadrado
-                col++;
-            }
-        }
-    }
-}
-
-Square *Board::getSquareAt(int x, int y)
+Piece Board::getTypeFEN(std::string fen)
 {
 
-    for (auto &sq : square)
+    if (fen.empty())
     {
-        if (sq.contains(x, y))
-        {
-
-            return &sq; // Retornar o quadrado que contém o ponto (x, y)
-        }
+        return Piece();
     }
-    return nullptr;
-}
+    char fenChar = fen[0];
+    PieceType type;
+    Color color;
 
-// CLicar em um quadrado do tabuleiro
-// Selecionar o quadrado clicado e travar os outros de serem pegos.
-// Destravar somente quando o mesmo for clicado !
+    switch (fenChar)
+    {
+    case 'p':
+        type = PieceType::PAWN;
+        color = BLACK;
+        break;
+    case 'P':
+        type = PieceType::PAWN;
+        color = WHITE;
+        break;
+    case 'r':
+        type = PieceType::ROOK;
+        color = BLACK;
+        break;
+    case 'R':
+        type = PieceType::ROOK;
+        color = WHITE;
+        break;
+    case 'n':
+        type = PieceType::KNIGHT;
+        color = BLACK;
+        break;
+    case 'N':
+        type = PieceType::KNIGHT;
+        color = WHITE;
+        break;
+    case 'b':
+        type = PieceType::BISHOP;
+        color = BLACK;
+        break;
+    case 'B':
+        type = PieceType::BISHOP;
+        color = WHITE;
+        break;
+    case 'q':
+        type = PieceType::QUEEN;
+        color = BLACK;
+        break;
+    case 'Q':
+        type = PieceType::QUEEN;
+        color = WHITE;
+        break;
+    case 'k':
+        type = PieceType::KING;
+        color = BLACK;
+        break;
+    case 'K':
+        type = PieceType::KING;
+        color = WHITE;
+        break;
+    }
+    return Piece(type, color);
+}

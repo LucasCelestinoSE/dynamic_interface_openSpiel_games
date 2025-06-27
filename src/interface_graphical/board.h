@@ -1,25 +1,22 @@
-#ifndef BOARD_H
-#define BOARD_H
-
 #include <string>
 #include "raylib.h"
 #include <vector>
 #include "square.h"
-
+#include "spiel.h"
+#include "chess.h"
+using namespace std;
 class Board
 {
 private:
-    std::vector<Square> square; // Vetor de quadrados
-    int rows;                   // Número de linhas
-    int cols;                   // Número de colunas
+    int rows;
+    int cols;
 
 public:
-    Square *selectedSquare = nullptr;        // Quadrado atualmente selecionado
-    Square *previousSquare = nullptr;        // Quadrado anteriormente selecionado
-    Board(int rows = 8, int cols = 8);       // Construtor com valores padrão para 8x8
-    void draw();                             // Método para desenhar o tabuleiro
-    void setFromFen(const std::string &fen); // Configurar o tabuleiro com base em uma FEN string
-    Square *getSquareAt(int x, int y);       // Retorna o quadrado na posição (x, y)
-};
+    vector<vector<Square>> squares;
+    std::unique_ptr<open_spiel::State> chessState; // Estado lógico do jogo de xadrez
 
-#endif // BOARD_H
+    Board(int rows = 8, int cols = 8);
+    std::string toString();
+    Piece getTypeFEN(std::string fen);
+    void fenToBoard(const std::string &fen);
+};
