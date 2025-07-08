@@ -5,16 +5,16 @@
 #### Fase 1: Reorientação e Análise do Estado Atual
 O objetivo aqui é lembrar o que o projeto faz, como ele funciona e qual o seu estado atual.
 
--   [ ] **1. Configurar o Ambiente e Compilar:**
+-   [ x ] **1. Configurar o Ambiente e Compilar:**
     -   Verifique se todas as dependências (`raylib`, `open_spiel`, `abseil-cpp`) estão corretamente instaladas e configuradas no `CMakeLists.txt`.
     -   Tente compilar o projeto do zero no diretório `build`. Anote e corrija quaisquer erros de compilação.
 
--   [ ] **2. Executar e Testar Manualmente:**
+-   [ x ] **2. Executar e Testar Manualmente:**
     -   Se compilar, execute o programa.
     -   O que aparece na tela? O que funciona? O que está quebrado ou incompleto?
     -   Anote o comportamento atual para saber o ponto de partida.
 
--   [ ] **3. Revisar o Código Fonte Principal:**
+-   [ x ] **3. Revisar o Código Fonte Principal:**
     -   Leia o `src/main.cc` para entender o loop principal do jogo e como a `raylib` é inicializada.
     -   Analise os arquivos em `src/interface_graphical/` para entender como o tabuleiro e as peças são desenhados.
     -   Verifique a pasta `src/open_spiel/` para ver como (e se) a integração com a biblioteca OpenSpiel foi iniciada.

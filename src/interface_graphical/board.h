@@ -21,4 +21,5 @@ public:
     void updateFromState(std::string fen); // Sincroniza o tabuleiro com o estado
     void fenToBoard(const std::string &fen);
     std::vector<PieceInfo> parseFenPlacement(const std::string &fen);
+    void drawBoard();
 };

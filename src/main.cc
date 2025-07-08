@@ -14,6 +14,7 @@ int main()
     state->ApplyAction(state->StringToAction("e4"));
     board.updateFromState(state->ToString());
     cout << board.toString() << endl;
+    board.drawBoard();
 
     return 0;
 }
