@@ -18,3 +18,6 @@ int main()
 
     return 0;
 }
+
+// pegar square, selecionando o tipo de peça -> passar para FEN -> concatenar com segunda casa
+// Aplicar ação.
