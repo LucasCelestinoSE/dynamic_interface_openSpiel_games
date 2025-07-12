@@ -284,7 +284,6 @@ void Board::drawBoard()
 
     CloseWindow();
 }
-// board.cc
 
 std::pair<int, int> Board::getSquareFromMousePosition(Vector2 mousePos)
 {
